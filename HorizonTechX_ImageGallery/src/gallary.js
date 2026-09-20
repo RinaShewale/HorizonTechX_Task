@@ -104,8 +104,8 @@ export const ARTWORKS = [
     medium: 'Tempera on canvas',
     dimensions: '172.5 cm × 278.5 cm',
     location: 'Uffizi Gallery, Florence',
-    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=85',
-    thumb: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1789700537304-c291bfc38ad9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8',
+    thumb: 'https://images.unsplash.com/photo-1789700537304-c291bfc38ad9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8',
     description: 'An ethereal Neoplatonic celebration of divine beauty, showing Venus emerging from the sea foam upon a giant seashell, guided ashore by Zephyrs drifting through raining rose petals.',
     accentColor: '#c59574'
   },
@@ -160,8 +160,8 @@ export const ARTWORKS = [
     medium: 'Oil and gold leaf on canvas',
     dimensions: '180 cm × 180 cm',
     location: 'Österreichische Galerie Belvedere, Vienna',
-    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=85',
-    thumb: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1577720643272-265f09367456?auto=format&fit=crop&w=1200&q=85',
+    thumb: 'https://images.unsplash.com/photo-1577720643272-265f09367456?auto=format&fit=crop&w=400&q=80',
     description: 'The golden zenith of the Vienna Secession, enveloping embracing lovers in an opulent tapestry of shimmering gold leaf, geometric symbols, and wildflower meadow radiance.',
     accentColor: '#d4af37'
   },
@@ -384,6 +384,18 @@ function init3DCylinder() {
     const spreadWidth = isMobile ? 260 : (isTablet ? 420 : 640);
     const depthCurve = isMobile ? 120 : (isTablet ? 190 : 260);
 
+    if (isNaN(store.currentAngle)) store.currentAngle = 0;
+    if (isNaN(store.targetAngle)) store.targetAngle = 0;
+
+    // Periodically normalize angles to prevent precision loss during long sessions
+    if (!store.isDragging) {
+      if (store.currentAngle < -36000 || store.currentAngle > 36000) {
+        const offset = store.currentAngle % 360;
+        store.targetAngle = (store.targetAngle - store.currentAngle) + offset;
+        store.currentAngle = offset;
+      }
+    }
+
     const diff = store.targetAngle - store.currentAngle;
     store.currentAngle += diff * 0.085;
 
@@ -398,7 +410,7 @@ function init3DCylinder() {
       if (relAngle > 180) relAngle -= 360;
       if (relAngle < -180) relAngle += 360;
 
-      if (Math.abs(relAngle) > 92) {
+      if (Math.abs(relAngle) > 95) {
         card.style.opacity = '0';
         card.style.pointerEvents = 'none';
         card.style.visibility = 'hidden';
@@ -412,12 +424,12 @@ function init3DCylinder() {
       const x = Math.sin(rad) * spreadWidth;
       const z = -(1 - Math.cos(rad)) * depthCurve;
       const rotateY = -relAngle * 0.62;
-      const progress = Math.abs(relAngle) / 90;
+      const progress = Math.min(1, Math.abs(relAngle) / 90);
       const scale = Math.max(0.68, 1 - progress * 0.32);
-      const opacity = Math.max(0, 1 - Math.pow(progress, 1.4) * 0.85);
+      const opacity = Math.max(0.08, 1 - Math.pow(progress, 1.35) * 0.88);
       const zIndex = Math.round(100 - Math.abs(relAngle));
 
-      card.style.transform = `translate3d(${x}px, 0px, ${z}px) rotateY(${rotateY}deg) scale(${scale})`;
+      card.style.transform = `translate3d(${x.toFixed(1)}px, 0px, ${z.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
       card.style.opacity = opacity.toFixed(3);
       card.style.zIndex = zIndex;
     });
@@ -437,6 +449,7 @@ function init3DCylinder() {
   requestAnimationFrame(loop);
 
   function onPointerDown(clientX) {
+    if (typeof clientX !== 'number' || isNaN(clientX)) return;
     store.isDragging = true;
     store.startX = clientX;
     store.lastX = clientX;
@@ -445,8 +458,9 @@ function init3DCylinder() {
   }
 
   function onPointerMove(clientX) {
-    if (!store.isDragging) return;
+    if (!store.isDragging || typeof clientX !== 'number' || isNaN(clientX)) return;
     const deltaX = clientX - store.lastX;
+    if (isNaN(deltaX)) return;
     store.lastX = clientX;
     const angleDelta = deltaX * 0.26;
     store.currentAngle += angleDelta;
@@ -495,25 +509,29 @@ function init3DCylinder() {
   let wheelTimer;
   let autoResumeTimer;
   stage.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const wheelDelta = (e.deltaX !== 0 ? e.deltaX : e.deltaY) * 0.12;
-    store.targetAngle -= wheelDelta;
-    store.isPlaying = false;
-    updatePlayPauseIcon();
-
-    clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => {
-      const norm = ((-store.targetAngle % 360) + 360) % 360;
-      const nearest = Math.round(norm / store.stepAngle) % store.artworks.length;
-      rotateToIndex(nearest);
-    }, 250);
-
-    // Auto-resume infinite rotation after interaction
-    clearTimeout(autoResumeTimer);
-    autoResumeTimer = setTimeout(() => {
-      store.isPlaying = true;
+    // Only intercept if horizontal swipe or holding Shift
+    // Allow normal page scrolling so scrolling to top and down the page is completely smooth
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) {
+      e.preventDefault();
+      const wheelDelta = (e.deltaX !== 0 ? e.deltaX : e.deltaY) * 0.12;
+      store.targetAngle -= wheelDelta;
+      store.isPlaying = false;
       updatePlayPauseIcon();
-    }, 3000);
+
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => {
+        const norm = ((-store.targetAngle % 360) + 360) % 360;
+        const nearest = Math.round(norm / store.stepAngle) % store.artworks.length;
+        rotateToIndex(nearest);
+      }, 250);
+
+      // Auto-resume infinite rotation after interaction
+      clearTimeout(autoResumeTimer);
+      autoResumeTimer = setTimeout(() => {
+        store.isPlaying = true;
+        updatePlayPauseIcon();
+      }, 3000);
+    }
   }, { passive: false });
 
   prevBtn?.addEventListener('click', () => {
@@ -1210,55 +1228,46 @@ function initScrollAnimations() {
 
   heroTimeline
     .from('.hero-eyebrow', {
-      y: 30,
+      y: 25,
       opacity: 0,
-      duration: 0.8
+      duration: 0.8,
+      clearProps: 'all'
     })
     .from('.hero-headline', {
-      y: 50,
+      y: 35,
       opacity: 0,
-      duration: 1
+      duration: 0.9,
+      clearProps: 'all'
     }, '-=0.5')
     .from('.hero-subtext', {
-      y: 30,
+      y: 20,
       opacity: 0,
-      duration: 0.8
+      duration: 0.8,
+      clearProps: 'all'
     }, '-=0.6')
     .from('.hero-spatial-carousel', {
-      y: 60,
+      y: 30,
       opacity: 0,
-      scale: 0.95,
-      duration: 1.2
+      duration: 1,
+      clearProps: 'transform,opacity'
     }, '-=0.5')
     .from('.hero-bottom-bar', {
       y: 20,
       opacity: 0,
-      duration: 0.6
+      duration: 0.6,
+      clearProps: 'all'
     }, '-=0.4');
 
-  // --- Hero Parallax on Scroll ---
+  // --- Hero Header Subtle Parallax Fade ---
   gsap.to('.hero-header-text', {
     scrollTrigger: {
       trigger: '#hero-section',
       start: 'top top',
-      end: 'bottom top',
+      end: 'bottom 45%',
       scrub: 1
     },
-    y: -80,
-    opacity: 0.3,
-    ease: 'none'
-  });
-
-  gsap.to('.hero-spatial-carousel', {
-    scrollTrigger: {
-      trigger: '#hero-section',
-      start: 'center top',
-      end: 'bottom top',
-      scrub: 1
-    },
-    y: -40,
-    scale: 0.96,
-    opacity: 0.5,
+    y: -50,
+    opacity: 0.2,
     ease: 'none'
   });
 
@@ -1322,42 +1331,44 @@ function initScrollAnimations() {
   });
 
   // --- Gallery Grid Cards Staggered Reveal ---
-  // Use MutationObserver to animate cards when they are rendered
   const galleryGrid = document.getElementById('gallery-grid');
   if (galleryGrid) {
+    let hasAnimated = false;
     const animateCards = () => {
       const cards = galleryGrid.querySelectorAll('.artwork-card');
       if (cards.length === 0) return;
 
       gsap.fromTo(cards, 
         { 
-          y: 60, 
+          y: 40, 
           opacity: 0,
-          scale: 0.92
+          scale: 0.95
         },
         {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.7,
-          stagger: 0.08,
+          duration: 0.6,
+          stagger: 0.05,
           ease: 'power3.out',
-          scrollTrigger: {
-            trigger: galleryGrid,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
+          clearProps: 'transform,opacity'
         }
       );
     };
 
-    // Observe for when cards are dynamically rendered
+    ScrollTrigger.create({
+      trigger: galleryGrid,
+      start: 'top 88%',
+      once: true,
+      onEnter: () => {
+        hasAnimated = true;
+        animateCards();
+      }
+    });
+
     const observer = new MutationObserver(() => {
-      if (galleryGrid.children.length > 0) {
-        // Small delay to let DOM settle
-        requestAnimationFrame(() => {
-          animateCards();
-        });
+      if (!hasAnimated && galleryGrid.children.length > 0) {
+        ScrollTrigger.refresh();
       }
     });
     observer.observe(galleryGrid, { childList: true });
