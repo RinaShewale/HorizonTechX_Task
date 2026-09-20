@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unbound — Spatial Art Gallery & Curated Archive</title>
+  <meta name="description" content="Immersive 3D spatial art gallery showcasing iconic masterpieces with curved rotunda showcase, interactive archive, and high-resolution examination." />
+  
+  <!-- Editorial Serif + Clean Modern Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+
+  <!-- Top Floating Nav -->
+  <header class="top-nav-header">
+    <nav class="nav-pill-unbound" aria-label="Main Navigation">
+      <a href="#hero-section" class="nav-unbound-logo" aria-label="Unbound Home">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">Unbound</span>
+      </a>
+
+      <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <ul class="nav-pill-links" id="nav-pill-links">
+        <li><a href="#hero-section" class="nav-pill-link active">Home</a></li>
+        <li><a href="#explore-section" class="nav-pill-link">Collections</a></li>
+        <li><a href="#events-modal" class="nav-pill-link" id="nav-events-btn">Events</a></li>
+        <li><a href="#visit-modal" class="nav-pill-link" id="nav-visit-btn">Visit</a></li>
+      </ul>
+
+      <div class="nav-actions-right">
+        <button id="nav-contact-btn" class="nav-pill-contact" aria-label="Open contact inquiry modal">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+          <span>Contact</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero: Curved 3D Rotunda Showcase -->
+  <section id="hero-section" class="hero-unbound-showcase">
+    <div class="hero-ambient-glow"></div>
+
+    <div class="hero-header-text">
+      <div class="hero-eyebrow">
+        <span class="hero-spark">◈</span>
+        <span>The Virtual Grand Rotunda</span>
+      </div>
+      <h1 class="hero-headline">
+        Explore a world where ideas move<br />
+        <span class="hero-headline-sub">beyond the screen</span>
+      </h1>
+      <p class="hero-subtext">
+        Spatial thinking used to test clarity and intent before design decisions are locked.
+      </p>
+    </div>
+
+    <div class="hero-spatial-carousel" id="hero-spatial-carousel" aria-label="Curved 3D Masterpiece Showcase">
+      <div class="hero-edge-mask left" aria-hidden="true"></div>
+      <div class="hero-edge-mask right" aria-hidden="true"></div>
+
+      <div class="hero-spatial-stage" id="spatial-stage" role="region" aria-label="Interactive 3D Carousel">
+        <div class="hero-spatial-track" id="spatial-track"></div>
+      </div>
+    </div>
+
+ 
+       
+    </div>
+  </section>
+
+  <!-- Explore Collections & Archive -->
+  <section id="explore-section" class="explore-section">
+    <div class="explore-container">
+      
+      <div class="section-intro">
+        <div class="spatial-badge">
+          <span class="badge-spark">◈</span>
+          <span>Curated Spatial Archive</span>
+        </div>
+        <h2 class="section-heading">Masterpieces of Human Expression</h2>
+        <p class="section-subtext">
+          Traverse centuries of artistic breakthroughs—from Romantic alpine heights and Impressionist light to modernism.
+        </p>
+      </div>
+
+      <!-- Sticky Filter Toolbar -->
+      <div class="gallery-sticky-toolbar" aria-label="Archive Filters & Search">
+        <div class="toolbar-inner">
+          <div class="filter-pills-wrap" role="tablist">
+            <button class="filter-pill-btn active" data-category="all" role="tab" aria-selected="true">
+              <span>All</span>
+              <span class="pill-count" id="count-all">12</span>
+            </button>
+            <button class="filter-pill-btn" data-category="Expressionism" role="tab" aria-selected="false">
+              <span>Expressionism</span>
+              <span class="pill-count" id="count-expressionism">1</span>
+            </button>
+            <button class="filter-pill-btn" data-category="Romanticism" role="tab" aria-selected="false">
+              <span>Romanticism</span>
+              <span class="pill-count" id="count-romanticism">1</span>
+            </button>
+            <button class="filter-pill-btn" data-category="Post-Impressionism" role="tab" aria-selected="false">
+              <span>Post-Impressionism</span>
+              <span class="pill-count" id="count-post-impressionism">3</span>
+            </button>
+            <button class="filter-pill-btn" data-category="Renaissance" role="tab" aria-selected="false">
+              <span>Renaissance</span>
+              <span class="pill-count" id="count-renaissance">4</span>
+            </button>
+            <button class="filter-pill-btn" data-category="Impressionism" role="tab" aria-selected="false">
+              <span>Impressionism</span>
+              <span class="pill-count" id="count-impressionism">1</span>
+            </button>
+            <button class="filter-pill-btn" data-category="Modern Art" role="tab" aria-selected="false">
+              <span>Modern Art</span>
+              <span class="pill-count" id="count-modern-art">2</span>
+            </button>
+          </div>
+
+          <div class="toolbar-utilities">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="gallery-search-input" placeholder="Search title, artist, era..." aria-label="Search artworks" />
+              <button id="search-clear-btn" class="search-clear-btn" aria-label="Clear search">✕</button>
+            </div>
+
+            <div class="sort-select-wrapper">
+              <select id="gallery-sort-select" aria-label="Sort collection">
+                <option value="featured">Featured Order</option>
+                <option value="year-asc">Chronological (Earliest)</option>
+                <option value="year-desc">Chronological (Latest)</option>
+                <option value="title-asc">Title (A–Z)</option>
+              </select>
+            </div>
+
+            <div class="view-mode-toggle">
+              <button id="view-grid-btn" class="view-btn active" title="Grid View" aria-label="Grid View">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                  <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                  <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                  <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                  <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+              </button>
+              <button id="view-compact-btn" class="view-btn" title="Compact View" aria-label="Compact View">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                  <rect x="3" y="4" width="18" height="4" rx="1"></rect>
+                  <rect x="3" y="10" width="18" height="4" rx="1"></rect>
+                  <rect x="3" y="16" width="18" height="4" rx="1"></rect>
+                </svg>
+              </button>
+            </div>
+
+            <div class="toolbar-nav-arrows">
+              <button id="gallery-prev-btn" class="nav-arrow-btn" aria-label="Previous artwork">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <span class="status-counter" id="gallery-status">Showing 12 masterpieces</span>
+              <button id="gallery-next-btn" class="nav-arrow-btn" aria-label="Next artwork">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collection Cards -->
+      <main class="gallery-content">
+        <div id="gallery-grid" class="gallery-grid" aria-live="polite"></div>
+
+        <div id="gallery-empty" class="gallery-empty hidden">
+          <div class="empty-icon">◈</div>
+          <p>No masterpieces match your current search criteria.</p>
+          <button id="btn-reset-filters" class="btn-reset-filters">Reset Filters</button>
+        </div>
+      </main>
+
+    </div>
+  </section>
+
+  <!-- Lightbox Inspection Room -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+
+    <div class="lightbox-dialog" id="lightbox-dialog">
+      <div class="lightbox-top-actions">
+        <span class="lightbox-counter-pill" id="lightbox-counter">01 / 12</span>
+        
+        <div class="lightbox-top-right">
+          <button id="lightbox-zoom-btn" class="lightbox-action-btn" title="Toggle Zoom (Z)" aria-label="Toggle Zoom">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </button>
+          <button id="lightbox-close" class="lightbox-action-btn close-btn" title="Close Lightbox (Esc)" aria-label="Close Lightbox">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button id="lightbox-prev" class="lightbox-nav-btn prev-btn" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button id="lightbox-next" class="lightbox-nav-btn next-btn" aria-label="Next image">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="lightbox-stage-container">
+        <div class="lightbox-image-wrapper" id="lightbox-image-wrapper">
+          <img id="lightbox-img" class="lightbox-img" src="" alt="" />
+          <div class="lightbox-zoom-indicator" id="lightbox-zoom-hint">Double click or press 'Z' to zoom</div>
+        </div>
+
+        <div class="lightbox-metadata-panel">
+          <div class="meta-header">
+            <span id="lightbox-category" class="meta-badge">Expressionism</span>
+            <span id="lightbox-year" class="meta-year">1893</span>
+          </div>
+          <h2 id="lightbox-title" class="meta-title">The Scream</h2>
+          <p id="lightbox-artist" class="meta-artist">Edvard Munch</p>
+          
+          <div class="meta-spec-grid">
+            <div class="spec-item">
+              <span class="spec-label">Medium</span>
+              <span id="lightbox-medium" class="spec-val">Oil, tempera, pastel on cardboard</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Dimensions</span>
+              <span id="lightbox-dims" class="spec-val">91 cm × 73.5 cm</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Provenance</span>
+              <span id="lightbox-location" class="spec-val">National Gallery, Oslo</span>
+            </div>
+          </div>
+
+          <p id="lightbox-desc" class="meta-description"></p>
+
+          <div class="lightbox-actions-panel">
+            <button id="lightbox-fav-btn" class="lightbox-btn-action" aria-label="Favorite artwork">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span id="lightbox-fav-label">Favorite</span>
+            </button>
+            <button id="lightbox-share-btn" class="lightbox-btn-action" aria-label="Share artwork">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              <span>Share</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lightbox-thumbs-strip" id="lightbox-thumbs-strip">
+        <div class="lightbox-thumbs-track" id="lightbox-thumbs-track"></div>
+      </div>
+
+      <div class="lightbox-keyboard-hint">
+        <span>← Left</span> • <span>Right →</span> • <span>Z Zoom</span> • <span>Esc Close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auxiliary Modals -->
+  <div id="contact-modal" class="aux-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close Contact Modal">✕</button>
+      <div class="modal-header">
+        <span class="modal-badge">Curatorial Inquiry</span>
+        <h3 class="modal-title">Connect with Unbound</h3>
+        <p class="modal-subtext">Inquire about spatial exhibitions, loans, or gallery viewings.</p>
+      </div>
+      <form id="contact-form" class="modal-form">
+        <div class="form-group">
+          <label for="contact-name">Full Name</label>
+          <input type="text" id="contact-name" placeholder="E.g., Julian Vance" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-email">Email Address</label>
+          <input type="email" id="contact-email" placeholder="julian@horizontechx.com" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" rows="3" placeholder="Tell us about your project or gallery visit inquiry..." required></textarea>
+        </div>
+        <button type="submit" class="btn-modal-submit">
+          <span>Send Inquiry</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </form>
+      <div id="contact-form-success" class="form-success-msg hidden">
+        Thank you. Your inquiry has been dispatched to the Unbound curatorial office.
+      </div>
+    </div>
+  </div>
+
+  <div id="events-modal" class="aux-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close Events Modal">✕</button>
+      <div class="modal-header">
+        <span class="modal-badge">Exhibition Calendar</span>
+        <h3 class="modal-title">Upcoming Spatial Events</h3>
+        <p class="modal-subtext">Experience our physical & virtual installations across global cultural capitals.</p>
+      </div>
+      <div class="events-list">
+        <div class="event-item">
+          <div class="event-date"><span class="day">18</span><span class="month">OCT</span></div>
+          <div class="event-detail">
+            <h4>Beyond the Horizon: Spatial Immersion</h4>
+            <p>Curated keynote & interactive rotunda installations.</p>
+          </div>
+          <button class="event-rsvp-btn" type="button">RSVP</button>
+        </div>
+        <div class="event-item">
+          <div class="event-date"><span class="day">04</span><span class="month">NOV</span></div>
+          <div class="event-detail">
+            <h4>Masters of Romanticism & Light</h4>
+            <p>Re-examination of Friedrich & Van Gogh.</p>
+          </div>
+          <button class="event-rsvp-btn" type="button">RSVP</button>
+        </div>
+        <div class="event-item">
+          <div class="event-date"><span class="day">12</span><span class="month">DEC</span></div>
+          <div class="event-detail">
+            <h4>The Digital Renaissance Forum</h4>
+            <p>Bridging classical oil painting with computational canvases.</p>
+          </div>
+          <button class="event-rsvp-btn" type="button">RSVP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="visit-modal" class="aux-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close Visit Modal">✕</button>
+      <div class="modal-header">
+        <span class="modal-badge">Visitor Information</span>
+        <h3 class="modal-title">Plan Your Gallery Visit</h3>
+        <p class="modal-subtext">Open daily for immersive spatial viewings and physical collection tours.</p>
+      </div>
+      <div class="visit-info-grid">
+        <div class="visit-box">
+          <h5>Gallery Hours</h5>
+          <p>Monday – Friday: 10:00 AM – 8:00 PM</p>
+          <p>Saturday – Sunday: 10:00 AM – 9:30 PM</p>
+        </div>
+        <div class="visit-box">
+          <h5>Admission</h5>
+          <p>General Admission: Complimentary</p>
+          <p>Curated Guided Tours: Available with reservation</p>
+        </div>
+        <div class="visit-box">
+          <h5>Location</h5>
+          <p>Horizon TechX Pavilion · West Gallery 04</p>
+          <p>Spatial Access Worldwide</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-notify" class="toast-notify" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="gallery-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <span class="footer-mark">◈</span>
+          <span class="footer-logo">Unbound</span>
+        </div>
+        <p class="footer-copy">Spatial thinking used to test clarity and intent before design decisions are locked.</p>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Unbound · Horizon TechX Frontend Showcase</p>
+        <a href="#hero-section" class="footer-back-to-top" aria-label="Back to top">
+          <span>Back to Top</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
