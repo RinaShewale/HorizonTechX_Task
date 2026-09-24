@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+   <div class="calculator-wrapper">
+    <div class="calculator-card">
+      
+      <!-- Top Bar: App Title & Utilities -->
+      <header class="calc-header">
+        <div class="brand">
+          <span class="brand-icon">⚛</span>
+          <span class="brand-text">SciCalc<span class="brand-pro">PRO</span></span>
+        </div>
+        <div class="header-actions">
+          <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <button id="historyToggleBtn" class="icon-btn" title="Calculation History" aria-label="Open History">
+            <span class="history-icon">📜</span>
+            <span id="historyBadge" class="history-badge">0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Display Area -->
+      <div class="display-section">
+        <div class="display-status-bar">
+          <div class="mode-chips">
+            <button id="angleModeBtn" class="chip-btn" title="Toggle Degrees / Radians">DEG</button>
+            <button id="shiftModeBtn" class="chip-btn" title="Toggle 2nd Functions">2nd</button>
+            <span id="memIndicator" class="indicator-chip hidden">M</span>
+          </div>
+          <span id="formulaPreview" class="formula-preview"></span>
+        </div>
+        <div class="display-screen">
+          <div id="prevExpressionDisplay" class="expression-line"></div>
+          <div class="main-input-line">
+            <input type="text" id="mainDisplay" class="main-display" value="0" readonly autocomplete="off">
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Memory Bar -->
+      <div class="memory-bar">
+        <button class="mem-btn" data-action="mc">MC</button>
+        <button class="mem-btn" data-action="mr">MR</button>
+        <button class="mem-btn" data-action="m-add">M+</button>
+        <button class="mem-btn" data-action="m-sub">M−</button>
+        <button class="mem-btn" data-action="ms">MS</button>
+      </div>
+
+      <!-- Keypad Grid (5-column scientific layout) -->
+      <div class="keypad">
+        
+        <!-- Row 1 -->
+        <button class="key scientific" data-insert="sin(" data-alt-insert="asin(">
+          <span class="primary-label">sin</span><span class="alt-label">sin⁻¹</span>
+        </button>
+        <button class="key scientific" data-insert="cos(" data-alt-insert="acos(">
+          <span class="primary-label">cos</span><span class="alt-label">cos⁻¹</span>
+        </button>
+        <button class="key scientific" data-insert="tan(" data-alt-insert="atan(">
+          <span class="primary-label">tan</span><span class="alt-label">tan⁻¹</span>
+        </button>
+        <button class="key scientific" data-insert="π">π</button>
+        <button class="key scientific" data-insert="e">e</button>
+
+        <!-- Row 2 -->
+        <button class="key scientific" data-insert="ln(" data-alt-insert="e^(">
+          <span class="primary-label">ln</span><span class="alt-label">eˣ</span>
+        </button>
+        <button class="key scientific" data-insert="log(" data-alt-insert="10^(">
+          <span class="primary-label">log</span><span class="alt-label">10ˣ</span>
+        </button>
+        <button class="key scientific" data-insert="^(">xʸ</button>
+        <button class="key scientific" data-insert="^2" data-alt-insert="^3">
+          <span class="primary-label">x²</span><span class="alt-label">x³</span>
+        </button>
+        <button class="key scientific" data-insert="√(" data-alt-insert="cbrt(">
+          <span class="primary-label">√</span><span class="alt-label">∛</span>
+        </button>
+
+        <!-- Row 3 -->
+        <button class="key scientific" data-action="fact">x!</button>
+        <button class="key scientific" data-action="reciprocal">1/x</button>
+        <button class="key scientific" data-insert="(">(</button>
+        <button class="key scientific" data-insert=")">)</button>
+        <button class="key action clear" data-action="clear">AC</button>
+
+        <!-- Row 4 -->
+        <button class="key scientific" data-insert="abs(">|x|</button>
+        <button class="key num" data-insert="7">7</button>
+        <button class="key num" data-insert="8">8</button>
+        <button class="key num" data-insert="9">9</button>
+        <button class="key action delete" data-action="del">⌫</button>
+
+        <!-- Row 5 -->
+        <button class="key scientific" data-insert="%">%</button>
+        <button class="key num" data-insert="4">4</button>
+        <button class="key num" data-insert="5">5</button>
+        <button class="key num" data-insert="6">6</button>
+        <button class="key op" data-insert="÷">÷</button>
+
+        <!-- Row 6 -->
+        <button class="key action" data-action="negate">±</button>
+        <button class="key num" data-insert="1">1</button>
+        <button class="key num" data-insert="2">2</button>
+        <button class="key num" data-insert="3">3</button>
+        <button class="key op" data-insert="×">×</button>
+
+        <!-- Row 7 -->
+        <button class="key scientific" data-action="ans">ANS</button>
+        <button class="key num" data-insert="0">0</button>
+        <button class="key num" data-insert=".">.</button>
+        <button class="key op" data-insert="−">−</button>
+        <button class="key op" data-insert="+">+</button>
+
+        <!-- Equals (Span All 5 Columns) -->
+        <button class="key equals-key" data-action="equals">=</button>
+      </div>
+
+    </div>
+
+    <!-- Slide-out History Drawer -->
+    <aside id="historyDrawer" class="history-drawer">
+      <div class="history-drawer-header">
+        <div class="history-title">
+          <span>📜</span> History
+        </div>
+        <div class="history-controls">
+          <button id="clearHistoryBtn" class="clear-history-btn" title="Clear History">Clear</button>
+          <button id="closeHistoryBtn" class="close-drawer-btn" title="Close Drawer">✕</button>
+        </div>
+      </div>
+      <div id="historyList" class="history-list">
+        <div class="empty-history-msg">No calculations yet.</div>
+      </div>
+    </aside>
+
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+  </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
