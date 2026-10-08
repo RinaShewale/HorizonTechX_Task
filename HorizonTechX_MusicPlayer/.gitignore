@@ -12,8 +12,8 @@ dist
 dist-ssr
 *.local
 
-
 public/songs/
+
 
 # Editor directories and files
 .vscode/*
