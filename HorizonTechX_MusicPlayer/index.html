@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbfbfa" />
+    <meta name="description" content="A simple, elegant space for your sound. Listen with Sonder." />
+    <title>Sonder — your music, your moment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- Minimalist Top Navigation -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <a class="brand" href="#" aria-label="Sonder">
+            <span class="brand-dot"></span>
+            <span class="brand-name">sonder<span class="brand-period">.</span></span>
+          </a>
+          <span class="topbar-tagline">simple &amp; calm listening</span>
+        </div>
+
+        <div class="topbar-center">
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="search" type="search" placeholder="Search track, artist..." autocomplete="off" aria-label="Search tracks">
+            <kbd>/</kbd>
+          </label>
+        </div>
+
+        <div class="topbar-right">
+          <label class="upload-btn" title="Add local MP3 or audio files">
+            <input type="file" id="file-uploader" multiple accept="audio/*" hidden>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 5v14m-7-7 7-7 7 7"/></svg>
+            <span>Import files</span>
+          </label>
+          <span class="library-count" id="library-count">Loading library...</span>
+        </div>
+      </header>
+
+      <!-- Main Two-Column Player Workspace -->
+      <main class="player-container">
+        <!-- Left: Elegant Now Playing Focus -->
+        <section class="now-playing-card" aria-label="Current Player">
+          <div class="disc-stage">
+            <div class="disc-glow"></div>
+            <div class="vinyl-record" id="vinyl-record">
+              <div class="vinyl-groove-lines"></div>
+              <div class="vinyl-center-badge art-0" id="feature-art">
+                <span class="vinyl-center-icon">♫</span>
+                <span class="feature-art-number" id="feature-number">01</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="track-meta">
+            <div class="meta-titles">
+              <h1 id="now-title">Pick a track</h1>
+              <p id="now-artist">Your personal collection</p>
+            </div>
+            <button class="icon-button heart-btn" id="now-favorite" type="button" aria-label="Add to favorites" aria-pressed="false">
+              ♡
+            </button>
+          </div>
+
+          <!-- Status Indicator with Equalizer -->
+          <div class="play-status-pill">
+            <span class="mini-eq" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </span>
+            <span id="playing-status-text">READY WHEN YOU ARE</span>
+          </div>
+
+          <!-- Timeline & Progress -->
+          <div class="scrubber">
+            <div class="range-wrapper">
+              <input id="progress" class="range-slider progress-slider" type="range" min="0" max="100" value="0" aria-label="Track progress" style="--val: 0%">
+            </div>
+            <div class="time-readout">
+              <span id="current-time">0:00</span>
+              <span id="duration">0:00</span>
+            </div>
+          </div>
+
+          <!-- Primary Transport Controls -->
+          <div class="transport-deck">
+            <button class="subtle-control" id="shuffle-button" type="button" aria-label="Shuffle" aria-pressed="false" title="Shuffle">⤨</button>
+            <button class="subtle-control" id="previous-button" type="button" aria-label="Previous track" title="Previous">|◀</button>
+            <button class="main-play-btn" id="play-button" type="button" aria-label="Play">▶</button>
+            <button class="subtle-control" id="next-button" type="button" aria-label="Next track" title="Next">▶|</button>
+            <button class="subtle-control" id="repeat-button" type="button" aria-label="Repeat" aria-pressed="false" title="Repeat">↻</button>
+          </div>
+
+          <!-- Volume Bar -->
+          <div class="volume-dock">
+            <button class="volume-btn" id="volume-button" type="button" aria-label="Mute">◖))</button>
+            <div class="range-wrapper volume-wrapper">
+              <input id="volume" class="range-slider volume-slider" type="range" min="0" max="1" step="0.01" value="0.75" aria-label="Volume" style="--val: 75%">
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Curated Tracklist & Navigation -->
+        <section class="library-panel" aria-labelledby="tracks-heading">
+          <!-- View Switcher Tabs -->
+          <div class="tabs-header">
+            <div class="tab-pill-group">
+              <button class="tab-pill is-active" type="button" data-view="all">All Tracks</button>
+              <button class="tab-pill" type="button" data-view="favorites">
+                Favorites <span class="tab-badge" id="favorite-count">0</span>
+              </button>
+              <button class="tab-pill" type="button" data-view="recent">Recently Played</button>
+            </div>
+
+            <div class="tab-actions">
+              <button class="quick-shuffle-btn" id="shuffle-all" type="button">
+                <span>⤨</span> Shuffle All
+              </button>
+            </div>
+          </div>
+
+          <!-- Header Title & Counter -->
+          <div class="list-summary">
+            <span class="summary-kicker" id="section-kicker">CURATED COLLECTION</span>
+            <div class="summary-title-row">
+              <h2 id="tracks-heading"><span id="heading-label">Start listening</span></h2>
+              <span class="track-count-tag" id="track-count">0 tracks</span>
+            </div>
+          </div>
+
+          <!-- Table Header -->
+          <div class="track-table-header" aria-hidden="true">
+            <span class="col-num">#</span>
+            <span class="col-title">TITLE</span>
+            <span class="col-album">SOURCE</span>
+            <span class="col-time">TIME</span>
+            <span class="col-action"></span>
+          </div>
+
+          <!-- Scrollable Track Rows -->
+          <div class="track-list" id="track-list" role="list"></div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="empty-state" hidden>
+            <div class="empty-symbol">⌕</div>
+            <h3>No tracks found</h3>
+            <p>Try searching for a different keyword or import your own audio files above.</p>
+          </div>
+
+          <!-- Up Next Footer Preview -->
+          <footer class="up-next-bar">
+            <span class="up-next-tag">UP NEXT</span>
+            <div class="up-next-info">
+              <strong id="queue-title">Choose a track</strong>
+              <span class="separator">·</span>
+              <span id="queue-time">0:00</span>
+            </div>
+          </footer>
+        </section>
+      </main>
+
+      <!-- Audio Element & Toast -->
+      <audio id="audio" preload="metadata"></audio>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
