@@ -256,9 +256,9 @@ const playTrack = async (index, shouldPlay) => {
       } else {
         playAmbientChords(track.index)
       }
-    } catch {
-      playAmbientChords(track.index)
-      showToast('Playing pleasant ambient tone for this track.')
+    } catch (error) {
+      console.error(`Could not play "${track.title}".`, error)
+      showToast(`Could not play "${track.title}". Check that the audio file is available.`)
     }
   } else {
     audio.pause()
@@ -272,7 +272,10 @@ const togglePlay = () => {
     playTrack(0, true)
   } else if (audio.paused && !synthOsc) {
     if (tracks[currentIndex]?.src) {
-      audio.play().catch(() => playAmbientChords(currentIndex))
+      audio.play().catch((error) => {
+        console.error(`Could not play "${tracks[currentIndex].title}".`, error)
+        showToast(`Could not play "${tracks[currentIndex].title}". Check that the audio file is available.`)
+      })
     } else {
       playAmbientChords(currentIndex)
     }
@@ -466,29 +469,24 @@ document.addEventListener('keydown', (e) => {
 // Initialize library
 const init = async () => {
   try {
-    const res = await fetch('/songs/manifest.json')
-    if (!res.ok) throw new Error()
+    const baseUrl = import.meta.env.BASE_URL
+    const res = await fetch(`${baseUrl}songs/manifest.json`)
+    if (!res.ok) throw new Error(`Song catalog request failed (${res.status}).`)
     const json = await res.json()
+    if (!Array.isArray(json)) throw new Error('Song catalog must be a list.')
     tracks = json.map((f, i) => ({
-      id: String(i),
+      id: f.file,
       index: i,
-      title: f.title || f.file.replace(/\.mp3$/i, ''),
+      title: f.title || `Track ${String(i + 1).padStart(3, '0')}`,
       artist: f.artist || '',
       file: f.file,
-      src: f.src,
+      src: f.src || `${baseUrl}songs/${encodeURIComponent(f.file)}`,
       duration: null,
     }))
-  } catch {
-    // Elegant starter tracks
-    tracks = Array.from({ length: 6 }, (_, i) => ({
-      id: String(i),
-      index: i,
-      title: `Local track ${String(i + 1).padStart(3, '0')}`,
-      artist: '',
-      file: `sonder_session_${i + 1}.mp3`,
-      src: '',
-      duration: 195 + (i * 18),
-    }))
+  } catch (error) {
+    console.error('Could not load the song catalog.', error)
+    tracks = []
+    showToast('Could not load songs. Check that the song catalog is available.')
   }
 
   recentIds = recentIds.filter((id) => tracks.some((t) => t.id === id))
