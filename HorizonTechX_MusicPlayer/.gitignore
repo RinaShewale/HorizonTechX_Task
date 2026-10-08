@@ -29,4 +29,4 @@ public/songs/
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?git rm -r --cached HorizonTechX_MusicPlayer/public/songs
+*.sw?
